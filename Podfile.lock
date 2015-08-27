@@ -1,0 +1,29 @@
+PODS:
+  - ably (0.7.0):
+    - SocketRocket (~> 0.3.1-beta2)
+  - JSQMessagesViewController (7.1.0):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
+  - SocketRocket (0.3.1-beta2)
+
+DEPENDENCIES:
+  - ably (from `https://github.com/ably/ably-ios.git`, branch `master`)
+  - JSQMessagesViewController
+
+EXTERNAL SOURCES:
+  ably:
+    :branch: master
+    :git: https://github.com/ably/ably-ios.git
+
+CHECKOUT OPTIONS:
+  ably:
+    :commit: 006d61ba4c8c2572e5e1e91d786bee6c6800ad29
+    :git: https://github.com/ably/ably-ios.git
+
+SPEC CHECKSUMS:
+  ably: dcff1a9389bf887001ae91db57d3015c0641ab6f
+  JSQMessagesViewController: ca11f86fa68ca70835f05e169df9244147c1dc40
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  SocketRocket: 7284ab9370a06c99aba92b2fe3a32aedd0f9a6fa
+
+COCOAPODS: 0.38.2
