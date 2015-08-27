@@ -27,6 +27,9 @@
                                 <state key="normal" title="Join">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <segue destination="OFi-7B-sOV" kind="show" id="KgE-tO-Sta"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -45,10 +48,21 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="CId-mV-PXo"/>
+                    <connections>
+                        <outlet property="nameTextField" destination="y5r-xH-gli" id="aRG-JW-mGZ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="597" y="856"/>
+        </scene>
+        <!--Chat View Controller-->
+        <scene sceneID="gEc-R4-RYu">
+            <objects>
+                <viewController id="OFi-7B-sOV" customClass="ChatViewController" customModule="demo_ios" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ee-hH-E5N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1428" y="856"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="SXW-0s-I0B">
