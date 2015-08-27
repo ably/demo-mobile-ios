@@ -10,7 +10,7 @@ import UIKit
 import ably
 
 
-class ViewController: UIViewController {
+class EditNameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
