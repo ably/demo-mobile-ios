@@ -50,4 +50,10 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
     }
+    
+    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+        let jsqMsg = JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text)
+        self.messages.append(jsqMsg)
+        self.finishSendingMessageAnimated(true)
+    }
 }
