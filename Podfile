@@ -4,7 +4,7 @@
 use_frameworks!
 
 target 'demo-ios' do
-    pod 'ably', :git => 'https://github.com/ably/ably-ios.git', :branch => 'master'
+    pod 'Ably', :git => 'https://github.com/ably/ably-ios.git', :branch => 'master'
     pod 'JSQMessagesViewController'
 end
 

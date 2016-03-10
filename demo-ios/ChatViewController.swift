@@ -7,26 +7,36 @@
 //
 
 import Foundation
-import ably
 import JSQMessagesViewController
+import Ably
 
 class ChatViewController: JSQMessagesViewController {
-    private var messages = [JSQMessage]();
-
+    private var messages = [JSQMessage]()
+    private var realtime: ARTRealtime!
+    private var channel: ARTRealtimeChannel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let clientOptions = ARTClientOptions(key: "xVLyHw.uLZGvg:KW-5NN-h0GYW0jqF")
+        let clientOptions = ARTClientOptions()
+        clientOptions.authUrl = NSURL(string: "https://www.ably.io/ably-auth/token-request/demos")
         clientOptions.clientId = self.senderId
+        clientOptions.logLevel = .Verbose
         
-        let realtime = ARTRealtime(options: clientOptions)
-        realtime.eventEmitter.on { (ARTRealtimeConnectionState state) -> Void in
-            print(state.rawValue)
+        self.realtime = ARTRealtime(options: clientOptions)
+        self.channel = realtime.channels.get("mobile:chat")
+        self.realtime.connection.on { stateChange in
+            if stateChange?.current == .Connected {
+                self.getHistory();
+            }
+            
+            if stateChange?.current == .Failed {
+                self.showError(stateChange!.reason!.description())
+            }
         }
         
-        let channel = realtime.channel("mobile:chat")
-        channel.subscribe { (ARTMessage msg) -> Void in
-            let jsqMsg = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.payload.payload.description)
+        channel.subscribe { msg in
+            let jsqMsg = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.data?.description)
             self.messages.append(jsqMsg)
             self.collectionView!.reloadData()
         }
@@ -55,5 +65,22 @@ class ChatViewController: JSQMessagesViewController {
         let jsqMsg = JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text)
         self.messages.append(jsqMsg)
         self.finishSendingMessageAnimated(true)
+    }
+    
+    func getHistory() {
+        self.channel.history { (result, errorArg) in
+            if let error = errorArg {
+                self.showError(error.description)
+            }
+            else {
+                print(result)
+            }
+        }
+    }
+    
+    func showError(error: String) {
+        let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }

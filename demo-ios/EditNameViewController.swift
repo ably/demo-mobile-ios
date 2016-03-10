@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import ably
-
 
 class EditNameViewController: UIViewController {
 
