@@ -28,7 +28,7 @@ class ChatViewController: JSQMessagesViewController {
         channel.subscribe { (ARTMessage msg) -> Void in
             let jsqMsg = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.payload.payload.description)
             self.messages.append(jsqMsg)
-            self.collectionView.reloadData()
+            self.collectionView!.reloadData()
         }
     }
     

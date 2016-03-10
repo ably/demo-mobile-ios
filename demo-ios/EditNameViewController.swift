@@ -20,7 +20,7 @@ class EditNameViewController: UIViewController {
     }
 
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
-        return !nameTextField.text.isEmpty
+        return nameTextField.text != nil && !nameTextField.text!.isEmpty
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
