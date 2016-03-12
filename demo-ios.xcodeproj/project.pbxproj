@@ -10,6 +10,7 @@
 		A6C2C28F4B65A02E1A7A7F78 /* Pods_demo_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E47D32B68CB7956B288DFFD /* Pods_demo_ios.framework */; };
 		F6135B471B8F7B960068EF7C /* ably.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6135B461B8F7B960068EF7C /* ably.framework */; };
 		F6135B4C1B8F86D30068EF7C /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6135B4B1B8F86D30068EF7C /* ChatViewController.swift */; };
+		F64469E91C934EDA00420928 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64469E81C934EDA00420928 /* ChatModel.swift */; };
 		F6E247D61B8F79E800A89ED7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E247D51B8F79E800A89ED7 /* AppDelegate.swift */; };
 		F6E247D81B8F79E800A89ED7 /* EditNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E247D71B8F79E800A89ED7 /* EditNameViewController.swift */; };
 		F6E247DB1B8F79E800A89ED7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6E247D91B8F79E800A89ED7 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 		F6135B461B8F7B960068EF7C /* ably.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ably.framework; path = "Pods/../build/Debug-iphoneos/ably.framework"; sourceTree = "<group>"; };
 		F6135B481B8F7BAC0068EF7C /* demo-ios-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "demo-ios-Bridging-Header.h"; sourceTree = "<group>"; };
 		F6135B4B1B8F86D30068EF7C /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		F64469E81C934EDA00420928 /* ChatModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		F6E247D01B8F79E800A89ED7 /* demo-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "demo-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E247D41B8F79E800A89ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6E247D51B8F79E800A89ED7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				F6E247D51B8F79E800A89ED7 /* AppDelegate.swift */,
 				F6E247D71B8F79E800A89ED7 /* EditNameViewController.swift */,
 				F6135B4B1B8F86D30068EF7C /* ChatViewController.swift */,
+				F64469E81C934EDA00420928 /* ChatModel.swift */,
 				F6E247D91B8F79E800A89ED7 /* Main.storyboard */,
 				F6E247DC1B8F79E800A89ED7 /* Images.xcassets */,
 				F6E247DE1B8F79E800A89ED7 /* LaunchScreen.xib */,
@@ -299,6 +302,7 @@
 			files = (
 				F6E247D81B8F79E800A89ED7 /* EditNameViewController.swift in Sources */,
 				F6135B4C1B8F86D30068EF7C /* ChatViewController.swift in Sources */,
+				F64469E91C934EDA00420928 /* ChatModel.swift in Sources */,
 				F6E247D61B8F79E800A89ED7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

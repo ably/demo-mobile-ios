@@ -17,7 +17,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Ably:
-    :commit: 0ae7563e75b39e261e15bea500407ee35381e7d8
+    :commit: e776f1947f9d513cb45c9fac8a19c3a63e30c414
     :git: https://github.com/ably/ably-ios.git
 
 SPEC CHECKSUMS:

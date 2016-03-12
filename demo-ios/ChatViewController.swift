@@ -14,32 +14,13 @@ class ChatViewController: JSQMessagesViewController {
     private var messages = [JSQMessage]()
     private var realtime: ARTRealtime!
     private var channel: ARTRealtimeChannel!
+    private var model: ChatModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let clientOptions = ARTClientOptions()
-        clientOptions.authUrl = NSURL(string: "https://www.ably.io/ably-auth/token-request/demos")
-        clientOptions.clientId = self.senderId
-        clientOptions.logLevel = .Verbose
-        
-        self.realtime = ARTRealtime(options: clientOptions)
-        self.channel = realtime.channels.get("mobile:chat")
-        self.realtime.connection.on { stateChange in
-            if stateChange?.current == .Connected {
-                self.getHistory();
-            }
-            
-            if stateChange?.current == .Failed {
-                self.showError(stateChange!.reason!.description())
-            }
-        }
-        
-        channel.subscribe { msg in
-            let jsqMsg = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.data?.description)
-            self.messages.append(jsqMsg)
-            self.collectionView!.reloadData()
-        }
+        self.model = ChatModel(clientId: self.senderId)
+        self.model?.connect()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -68,19 +49,98 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     func getHistory() {
+        let chatAndPresenceMessages: [AnyObject] = []
+        var isMessageHistoryLoaded = false
+        var isPresenceHistoryLoaded = false
+        
         self.channel.history { (result, errorArg) in
+            isMessageHistoryLoaded = true
+
             if let error = errorArg {
                 self.showError(error.description)
+                return
             }
-            else {
-                print(result)
+            
+            if !isPresenceHistoryLoaded {
+                return
+            }
+            
+            if let items = result?.items {
+                for msg in items as! [ARTMessage] {
+                    let jsqMsg = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.data?.description)
+
+                    self.messages.append(jsqMsg)
+                    self.collectionView!.reloadData()
+                }
             }
         }
+        
+        self.channel.presence.history { (result, errorArg) in
+            isPresenceHistoryLoaded = true
+            if let error = errorArg {
+                self.showError(error.description)
+                return
+            }
+            
+            if !isMessageHistoryLoaded {
+                return
+            }
+            
+            if let items = result?.items {
+                for msg in items as! [ARTPresenceMessage] {
+                    let jsqMessage = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.memberKey())
+                    
+                    self.messages.append(jsqMessage)
+                    self.collectionView!.reloadData()
+                }
+            }
+        }
+    }
+    
+    func clearMessages() {
+        
+    }
+    
+    func showNotice(type: String, b: String?) {
+        
+    }
+    
+    func hideNotice(type: String) {
+        
+    }
+    
+    func prependHistoricalMessages(messages: [ARTBaseMessage]) {
+        
     }
     
     func showError(error: String) {
         let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+}
+
+extension ChatViewController: ChatModelDelegate {
+    func chatModel(chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange) {
+        
+    }
+    
+    func chatModel(chatModel: ChatModel, didReceiveError error: ARTErrorInfo) {
+        self.showError(error.message)
+    }
+    
+    func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage) {
+        
+        
+    }
+    
+    func chatModelLoadingHistory(chatModel: ChatModel) {
+        self.showNotice("loading", b: "'Hang on a sec, loading the chat history...")
+        self.clearMessages()
+    }
+    
+    func chatModel(chatModel: ChatModel, historyDidLoadWithMessages messages: [ARTBaseMessage]) {
+        self.hideNotice("loading")
+        self.prependHistoricalMessages(messages)
     }
 }
