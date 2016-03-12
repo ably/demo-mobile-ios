@@ -20,7 +20,8 @@ class ChatViewController: JSQMessagesViewController {
         super.viewDidLoad()
         
         self.model = ChatModel(clientId: self.senderId)
-        self.model?.connect()
+        self.model!.delegate = self
+        self.model!.connect()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -48,54 +49,6 @@ class ChatViewController: JSQMessagesViewController {
         self.finishSendingMessageAnimated(true)
     }
     
-    func getHistory() {
-        let chatAndPresenceMessages: [AnyObject] = []
-        var isMessageHistoryLoaded = false
-        var isPresenceHistoryLoaded = false
-        
-        self.channel.history { (result, errorArg) in
-            isMessageHistoryLoaded = true
-
-            if let error = errorArg {
-                self.showError(error.description)
-                return
-            }
-            
-            if !isPresenceHistoryLoaded {
-                return
-            }
-            
-            if let items = result?.items {
-                for msg in items as! [ARTMessage] {
-                    let jsqMsg = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.data?.description)
-
-                    self.messages.append(jsqMsg)
-                    self.collectionView!.reloadData()
-                }
-            }
-        }
-        
-        self.channel.presence.history { (result, errorArg) in
-            isPresenceHistoryLoaded = true
-            if let error = errorArg {
-                self.showError(error.description)
-                return
-            }
-            
-            if !isMessageHistoryLoaded {
-                return
-            }
-            
-            if let items = result?.items {
-                for msg in items as! [ARTPresenceMessage] {
-                    let jsqMessage = JSQMessage(senderId: msg.clientId, displayName: msg.clientId, text: msg.memberKey())
-                    
-                    self.messages.append(jsqMessage)
-                    self.collectionView!.reloadData()
-                }
-            }
-        }
-    }
     
     func clearMessages() {
         
@@ -131,7 +84,6 @@ extension ChatViewController: ChatModelDelegate {
     
     func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage) {
         
-        
     }
     
     func chatModelLoadingHistory(chatModel: ChatModel) {
@@ -142,5 +94,12 @@ extension ChatViewController: ChatModelDelegate {
     func chatModel(chatModel: ChatModel, historyDidLoadWithMessages messages: [ARTBaseMessage]) {
         self.hideNotice("loading")
         self.prependHistoricalMessages(messages)
+    }
+    
+    func chatModel(chatModel: ChatModel, membersDidUpdate: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
+        /*
+            addToMessageList(presencePartial(presenceMessage));
+            updateMembers(members);
+        */
     }
 }

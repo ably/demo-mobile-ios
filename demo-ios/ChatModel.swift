@@ -1,26 +1,12 @@
 import Foundation
 
-public class ChatMessage {
-    public var sender: String
-    
-    public init(sender: String) {
-        self.sender = sender
-    }
-}
-
-class PresenceMessage {
-    
-}
-
-public class CombinedMessagesDataSource {
-}
-
 public protocol ChatModelDelegate {
     func chatModel(chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange)
     func chatModelLoadingHistory(chatModel: ChatModel)
     func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage)
     func chatModel(chatModel: ChatModel, didReceiveError error: ARTErrorInfo)
     func chatModel(chatModel: ChatModel, historyDidLoadWithMessages: [ARTBaseMessage])
+    func chatModel(chatModel: ChatModel, membersDidUpdate: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage)
 }
 
 public class ChatModel {
@@ -100,7 +86,15 @@ public class ChatModel {
     }
     
     private func membersChanged(msg: ARTPresenceMessage) {
-        
+        self.channel?.presence.get() { (result, error) in
+            guard error == nil else {
+                self.signalError(ARTErrorInfo.createWithNSError(error!))
+                return
+            }
+            
+            let members = result?.items as? [ARTPresenceMessage] ?? [ARTPresenceMessage]()
+            self.delegate?.chatModel(self, membersDidUpdate: members, presenceMessage: msg)
+        }
     }
     
     private func loadHistory() {
@@ -118,7 +112,7 @@ public class ChatModel {
             })
             
             self.delegate?.chatModel(self, historyDidLoadWithMessages: combinedMessageHistory)
-       };
+        };
         
         self.getMessagesHistory { messages in
             messageHistory = messages;
@@ -132,15 +126,53 @@ public class ChatModel {
     }
     
     private func getMessagesHistory(callback: [ARTMessage] -> Void) {
-    
+        do {
+            try self.channel!.history(self.createHistoryQueryOptions()) { (result, error) in
+                guard error == nil else {
+                    self.signalError(ARTErrorInfo.createWithNSError(error!))
+                    return
+                }
+                
+                let items = result?.items as? [ARTMessage] ?? [ARTMessage]()
+                callback(items)
+            }
+        }
+        catch let error as NSError {
+            self.signalError(ARTErrorInfo.createWithNSError(error))
+        }
     }
     
     private func getPresenceHistory(callback: [ARTPresenceMessage] -> Void) {
-    
+        do {
+            try self.channel!.presence.history(self.createHistoryQueryOptions()) { (result, error) in
+                guard error == nil else {
+                    self.signalError(ARTErrorInfo.createWithNSError(error!))
+                    return
+                }
+                
+                let items = result?.items as? [ARTPresenceMessage] ?? [ARTPresenceMessage]()
+                callback(items)
+            }
+        }
+        catch let error as NSError {
+            self.signalError(ARTErrorInfo.createWithNSError(error))
+        }
     }
-    
+
+    private func createHistoryQueryOptions() -> ARTRealtimeHistoryQuery {
+        let query = ARTRealtimeHistoryQuery()
+        query.limit = 50
+        query.direction = .Backwards
+        query.untilAttach = false
+        return query
+    }
+
     private func didChannelLoseState(error: ARTErrorInfo?) {
-    
+        self.channel?.unsubscribe()
+        self.channel?.presence.unsubscribe()
+        self.ablyRealtime?.connection.once(.Connected) { state in
+            self.joinChannel()
+        }
     }
     
     private func signalError(error: ARTErrorInfo) {
