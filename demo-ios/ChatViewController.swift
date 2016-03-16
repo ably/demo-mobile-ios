@@ -1,11 +1,3 @@
-//
-//  ChatViewController.swift
-//  demo-ios
-//
-//  Created by Stan on 8/27/15.
-//  Copyright (c) 2015 Ably. All rights reserved.
-//
-
 import Foundation
 import JSQMessagesViewController
 import Ably
@@ -14,14 +6,14 @@ class ChatViewController: JSQMessagesViewController {
     private var messages = [JSQMessage]()
     private var realtime: ARTRealtime!
     private var channel: ARTRealtimeChannel!
-    private var model: ChatModel?
+    private var model: ChatModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.model = ChatModel(clientId: self.senderId)
-        self.model!.delegate = self
-        self.model!.connect()
+        self.model.delegate = self
+        self.model.connect()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -40,7 +32,8 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-        return nil
+        
+        return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("FF", backgroundColor: UIColor.blackColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(10), diameter: 40)
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
@@ -49,27 +42,50 @@ class ChatViewController: JSQMessagesViewController {
         self.finishSendingMessageAnimated(true)
     }
     
-    
     func clearMessages() {
-        
+        self.messages.removeAll()
+        self.collectionView?.reloadData()
     }
     
-    func showNotice(type: String, b: String?) {
-        
+    func showNotice(type: String, message: String?) {
+        let controller = UIAlertController(title: type, message: message, preferredStyle: .ActionSheet)
+        self.presentViewController(controller, animated: true, completion: nil)
     }
     
     func hideNotice(type: String) {
-        
+        if let controller = self.presentedViewController {
+            controller.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     func prependHistoricalMessages(messages: [ARTBaseMessage]) {
+        for msg in messages {
+            if let presenceMsg = msg as? ARTPresenceMessage {
+                let jsqMsg = JSQMessage(senderId: self.model.clientId,
+                                        displayName: self.model.clientId,
+                                        text: "\(presenceMsg.clientId!) \(presenceActionDescription(presenceMsg.action)) channel")
+                self.messages.append(jsqMsg)
+            }
+        }
         
+        self.collectionView?.reloadData()
     }
     
     func showError(error: String) {
         let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    private func presenceActionDescription(presenceAction: ARTPresenceAction) -> String {
+        switch presenceAction {
+        case .Enter:
+            return "entered"
+        case .Leave:
+            return "left"
+        default:
+            return ""
+        }
     }
 }
 
@@ -87,7 +103,7 @@ extension ChatViewController: ChatModelDelegate {
     }
     
     func chatModelLoadingHistory(chatModel: ChatModel) {
-        self.showNotice("loading", b: "'Hang on a sec, loading the chat history...")
+        self.showNotice("loading", message: "'Hang on a sec, loading the chat history...")
         self.clearMessages()
     }
     
@@ -98,8 +114,8 @@ extension ChatViewController: ChatModelDelegate {
     
     func chatModel(chatModel: ChatModel, membersDidUpdate: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
         /*
-            addToMessageList(presencePartial(presenceMessage));
-            updateMembers(members);
+        addToMessageList(presencePartial(presenceMessage));
+        updateMembers(members);
         */
     }
 }
