@@ -1,50 +1,44 @@
 import Foundation
-import JSQMessagesViewController
 import Ably
 
-class ChatViewController: JSQMessagesViewController {
-    private var messages = [JSQMessage]()
+class ChatViewController: UIViewController {
+    private var messages = [ARTBaseMessage]()
     private var realtime: ARTRealtime!
     private var channel: ARTRealtimeChannel!
     private var model: ChatModel!
     
+    @IBOutlet weak var messagesTableView: UITableView!
+    var clientId: String!
+    
+    @IBAction func userTyping(sender: AnyObject) {
+
+    }
+    
+    @IBAction func userDidSendMessage(sender: AnyObject) {
+        if let messageTextField = sender as? UITextField, text = messageTextField.text{
+            if text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty {
+                return
+            }
+            
+            messageTextField.text = nil
+            messageTextField.becomeFirstResponder()
+            
+            self.showNotice("sending", message: "Sending message")
+            self.model.publishMessage(text)
+            //self.model.sendTypingNotification(false)
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.model = ChatModel(clientId: self.senderId)
+        self.model = ChatModel(clientId: self.clientId)
         self.model.delegate = self
         self.model.connect()
     }
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let msgCount = messages.count
-        return msgCount
-    }
-    
-    override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
-        let item = indexPath.item
-        let msg = messages[item]
-        return msg
-    }
-    
-    override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-        return JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.grayColor())
-    }
-    
-    override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-        
-        return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("FF", backgroundColor: UIColor.blackColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(10), diameter: 40)
-    }
-    
-    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        let jsqMsg = JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text)
-        self.messages.append(jsqMsg)
-        self.finishSendingMessageAnimated(true)
-    }
-    
     func clearMessages() {
         self.messages.removeAll()
-        self.collectionView?.reloadData()
+        self.messagesTableView.reloadData()
     }
     
     func showNotice(type: String, message: String?) {
@@ -61,14 +55,21 @@ class ChatViewController: JSQMessagesViewController {
     func prependHistoricalMessages(messages: [ARTBaseMessage]) {
         for msg in messages {
             if let presenceMsg = msg as? ARTPresenceMessage {
-                let jsqMsg = JSQMessage(senderId: self.model.clientId,
-                                        displayName: self.model.clientId,
-                                        text: "\(presenceMsg.clientId!) \(presenceActionDescription(presenceMsg.action)) channel")
-                self.messages.append(jsqMsg)
+                if presenceMsg.action == .Enter || presenceMsg.action == .Leave {
+                    self.messages.append(presenceMsg)
+                }
+            }
+            
+            if let chatMsg = msg as? ARTMessage {
+                self.messages.append(chatMsg)
             }
         }
         
-        self.collectionView?.reloadData()
+        self.messages.sortInPlace { (msg1, msg2) -> Bool in
+            return msg1.timestamp.compare(msg2.timestamp) == .OrderedAscending
+        }
+        
+        self.messagesTableView.reloadData()
     }
     
     func showError(error: String) {
@@ -77,7 +78,7 @@ class ChatViewController: JSQMessagesViewController {
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    private func presenceActionDescription(presenceAction: ARTPresenceAction) -> String {
+    private func descriptionForPresenceAction(presenceAction: ARTPresenceAction) -> String {
         switch presenceAction {
         case .Enter:
             return "entered"
@@ -86,6 +87,30 @@ class ChatViewController: JSQMessagesViewController {
         default:
             return ""
         }
+    }
+}
+
+extension ChatViewController: UITableViewDataSource {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.messages.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let message = self.messages[indexPath.row] as? ARTMessage {
+            if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessage") {
+                cell.textLabel?.text = message.data?.description
+                return cell
+            }
+        }
+        
+        if let presenceMessage = self.messages[indexPath.row] as? ARTPresenceMessage {
+            if let cell = tableView.dequeueReusableCellWithIdentifier("PresenceMessage") {
+                cell.textLabel?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel"
+                return cell
+            }
+        }
+        
+        return tableView.dequeueReusableCellWithIdentifier("")!
     }
 }
 
@@ -102,6 +127,11 @@ extension ChatViewController: ChatModelDelegate {
         
     }
     
+    
+    func chatModelDidFinishSendingMessage(chatModel: ChatModel) {
+        self.hideNotice("sending")
+    }
+    
     func chatModelLoadingHistory(chatModel: ChatModel) {
         self.showNotice("loading", message: "'Hang on a sec, loading the chat history...")
         self.clearMessages()
@@ -113,9 +143,5 @@ extension ChatViewController: ChatModelDelegate {
     }
     
     func chatModel(chatModel: ChatModel, membersDidUpdate: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
-        /*
-        addToMessageList(presencePartial(presenceMessage));
-        updateMembers(members);
-        */
     }
 }

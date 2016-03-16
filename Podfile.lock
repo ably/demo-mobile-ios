@@ -1,14 +1,10 @@
 PODS:
   - Ably (0.8.0-beta.1):
     - SwiftWebSocket (~> 2.5)
-  - JSQMessagesViewController (7.2.0):
-    - JSQSystemSoundPlayer (~> 2.0.1)
-  - JSQSystemSoundPlayer (2.0.1)
   - SwiftWebSocket (2.5.0)
 
 DEPENDENCIES:
   - Ably (from `https://github.com/ably/ably-ios.git`, branch `master`)
-  - JSQMessagesViewController
 
 EXTERNAL SOURCES:
   Ably:
@@ -22,8 +18,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Ably: bc0d494bc05f26ac67c1f57b2f846b01f7d3e175
-  JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
-  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   SwiftWebSocket: 168cbde980dc3b5bac925a3d8186f82b3e87768e
 
 COCOAPODS: 0.39.0

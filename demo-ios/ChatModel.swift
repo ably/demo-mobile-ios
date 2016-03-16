@@ -3,6 +3,7 @@ import Foundation
 public protocol ChatModelDelegate {
     func chatModel(chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange)
     func chatModelLoadingHistory(chatModel: ChatModel)
+    func chatModelDidFinishSendingMessage(chatModel: ChatModel)
     func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage)
     func chatModel(chatModel: ChatModel, didReceiveError error: ARTErrorInfo)
     func chatModel(chatModel: ChatModel, historyDidLoadWithMessages: [ARTBaseMessage])
@@ -50,6 +51,17 @@ public class ChatModel {
         
         self.channel = realtime.channels.get("mobile:chat")
         self.joinChannel()
+    }
+    
+    public func publishMessage(message: String) {
+        self.channel?.publish(self.clientId, data: message) { error in
+            guard error == nil else {
+                self.signalError(error!)
+                return
+            }
+            
+            self.delegate?.chatModelDidFinishSendingMessage(self)
+        }
     }
     
     private func detachHandlers() {

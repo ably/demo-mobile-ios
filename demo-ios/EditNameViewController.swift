@@ -26,8 +26,7 @@ class EditNameViewController: UIViewController {
         let chatViewController = segue.destinationViewController as! ChatViewController;
         
         // JSQMessagesViewController requires properly set senderId and senderDisplayName
-        chatViewController.senderId = clientId
-        chatViewController.senderDisplayName = clientId
+        chatViewController.clientId = clientId
     }
     
     override func didReceiveMemoryWarning() {
