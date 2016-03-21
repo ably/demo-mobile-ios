@@ -104,14 +104,25 @@ extension ChatViewController: UITableViewDataSource {
         }
         
         if let presenceMessage = self.messages[indexPath.row] as? ARTPresenceMessage {
-            if let cell = tableView.dequeueReusableCellWithIdentifier("PresenceMessage") {
-                cell.textLabel?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel"
+            if let cell = tableView.dequeueReusableCellWithIdentifier("PresenceMessage") as? PresenceMessageCell {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.doesRelativeDateFormatting = true
+                dateFormatter.timeStyle = .ShortStyle
+                dateFormatter.dateStyle = .ShortStyle
+                
+                let dateText = dateFormatter.stringFromDate(presenceMessage.timestamp).lowercaseString
+                
+                cell.presenceText?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel \(dateText)"
                 return cell
             }
         }
         
         return tableView.dequeueReusableCellWithIdentifier("")!
     }
+}
+
+class PresenceMessageCell: UITableViewCell {
+    @IBOutlet weak var presenceText: UILabel!
 }
 
 extension ChatViewController: ChatModelDelegate {
