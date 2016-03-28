@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GradientView
 
 class EditNameViewController: UIViewController {
 
@@ -14,7 +15,11 @@ class EditNameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    
+        let rootView = self.view as! GradientView
+        rootView.colors = [UIColor.whiteColor(), UIColor(white: 0.87, alpha: 1)]
+        rootView.locations = [0.2, 0.95]
+        rootView.mode = .Radial
     }
 
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {

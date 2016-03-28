@@ -5,6 +5,7 @@ use_frameworks!
 
 target 'demo-ios' do
     pod 'Ably', :git => 'https://github.com/ably/ably-ios.git', :branch => 'master'
+    pod 'GradientView'
 end
 
 target 'demo-iosTests' do
