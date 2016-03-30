@@ -8,6 +8,7 @@ class ChatViewController: UIViewController {
     private var model: ChatModel!
     
     @IBOutlet weak var messagesTableView: UITableView!
+    @IBOutlet weak var membersCountLabel: UILabel?
     var clientId: String!
     
     @IBAction func userTyping(sender: AnyObject) {
@@ -88,13 +89,18 @@ class ChatViewController: UIViewController {
             return ""
         }
     }
+    
+    private func updateMembers(members: [ARTPresenceMessage]) {
+        self.membersCountLabel?.text = "\(members.count)"
+        // TODO: implement rest of logic
+    }
 }
 
 extension ChatViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.messages.count
     }
-    
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let message = self.messages[indexPath.row] as? ARTMessage {
             if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessage") {
@@ -102,7 +108,7 @@ extension ChatViewController: UITableViewDataSource {
                 return cell
             }
         }
-        
+
         if let presenceMessage = self.messages[indexPath.row] as? ARTPresenceMessage {
             if let cell = tableView.dequeueReusableCellWithIdentifier("PresenceMessage") as? PresenceMessageCell {
                 let dateFormatter = NSDateFormatter()
@@ -151,8 +157,20 @@ extension ChatViewController: ChatModelDelegate {
     func chatModel(chatModel: ChatModel, historyDidLoadWithMessages messages: [ARTBaseMessage]) {
         self.hideNotice("loading")
         self.prependHistoricalMessages(messages)
+        
+        let tableRows = self.messagesTableView!.numberOfRowsInSection(0)
+        if tableRows > 0
+        {
+            let lastMessageIndex = tableRows - 1
+            let lastMessageIndexPath = NSIndexPath(forRow: lastMessageIndex, inSection: 0)
+            self.messagesTableView.scrollToRowAtIndexPath(lastMessageIndexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+        }
     }
     
-    func chatModel(chatModel: ChatModel, membersDidUpdate: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
+    func chatModel(chatModel: ChatModel, membersDidUpdate members: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
+
+        self.messages.append(presenceMessage)
+        self.messagesTableView.reloadData()
+        self.updateMembers(members)
     }
 }

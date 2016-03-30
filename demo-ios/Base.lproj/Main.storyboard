@@ -142,10 +142,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="WEE-jR-CEM">
-                                                    <rect key="frame" x="272" y="9" width="56" height="27"/>
+                                                    <rect key="frame" x="272" y="9" width="55.5" height="27"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3O-r7-hO1">
-                                                            <rect key="frame" x="10" y="5" width="36" height="17"/>
+                                                            <rect key="frame" x="10" y="5" width="35.5" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.81176470588235294" green="0.81176470588235294" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -195,11 +195,45 @@
                                             <action selector="userTyping:" destination="OFi-7B-sOV" eventType="editingChanged" id="Gqs-iu-CAV"/>
                                         </connections>
                                     </textField>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aeY-gz-J7P" userLabel="MembersContainer">
+                                        <rect key="frame" x="415" y="-15" width="52" height="26"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAb-HL-DT7" userLabel="MembersCount">
+                                                <rect key="frame" x="22" y="2" width="0.0" height="0.0"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Members Icon" translatesAutoresizingMaskIntoConstraints="NO" id="YmY-VK-mH8">
+                                                <rect key="frame" x="30" y="4" width="16" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="GgB-mk-L9u"/>
+                                                    <constraint firstAttribute="width" constant="16" id="Rdb-ZX-ZNb"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="YmY-VK-mH8" secondAttribute="trailing" constant="6" id="43i-a0-nUB"/>
+                                            <constraint firstItem="YmY-VK-mH8" firstAttribute="top" secondItem="aeY-gz-J7P" secondAttribute="top" constant="4" id="NX7-5T-q4w"/>
+                                            <constraint firstItem="YmY-VK-mH8" firstAttribute="leading" secondItem="DAb-HL-DT7" secondAttribute="trailing" constant="8" id="Wet-kj-xOy"/>
+                                            <constraint firstAttribute="height" constant="26" id="hO7-M3-Qjg"/>
+                                            <constraint firstItem="DAb-HL-DT7" firstAttribute="top" secondItem="aeY-gz-J7P" secondAttribute="top" constant="2" id="kHu-bg-Eoa"/>
+                                            <constraint firstAttribute="width" constant="52" id="yz4-5E-0zb"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="13"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.66666666666666663" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="aeY-gz-J7P" firstAttribute="trailing" secondItem="19e-ww-plk" secondAttribute="trailing" id="0QY-zw-bdi"/>
                                     <constraint firstItem="19e-ww-plk" firstAttribute="centerX" secondItem="Rcn-DX-tJf" secondAttribute="centerX" id="AfS-64-Zc9"/>
                                     <constraint firstAttribute="height" constant="79" id="HER-Px-8TL"/>
+                                    <constraint firstItem="19e-ww-plk" firstAttribute="top" secondItem="aeY-gz-J7P" secondAttribute="bottom" constant="13" id="Svx-yi-pRD"/>
                                     <constraint firstItem="19e-ww-plk" firstAttribute="centerY" secondItem="Rcn-DX-tJf" secondAttribute="centerY" id="n59-pN-iYZ"/>
                                 </constraints>
                             </view>
@@ -216,6 +250,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="membersCountLabel" destination="DAb-HL-DT7" id="WIo-WS-Cou"/>
                         <outlet property="messagesTableView" destination="LfS-Pl-ydr" id="bJ6-Qh-gwj"/>
                     </connections>
                 </viewController>
@@ -241,6 +276,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Members Icon" width="100" height="100"/>
         <image name="ably-logo" width="756" height="1188"/>
     </resources>
 </document>
