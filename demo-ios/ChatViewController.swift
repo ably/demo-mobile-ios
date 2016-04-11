@@ -7,6 +7,10 @@ class ChatViewController: UIViewController {
     private var channel: ARTRealtimeChannel!
     private var model: ChatModel!
     
+    @IBOutlet weak var statusContainer: UIView!
+
+    @IBOutlet weak var statusText: UILabel!
+    @IBOutlet weak var statusIcon: UILabel!
     @IBOutlet weak var messagesTableView: UITableView!
     @IBOutlet weak var membersCountLabel: UILabel?
     var clientId: String!
@@ -43,14 +47,13 @@ class ChatViewController: UIViewController {
     }
     
     func showNotice(type: String, message: String?) {
-        let controller = UIAlertController(title: type, message: message, preferredStyle: .ActionSheet)
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.statusContainer.hidden = false
+        self.statusText.text =  message
+        self.statusIcon.text = "\u{E600}"
     }
     
     func hideNotice(type: String) {
-        if let controller = self.presentedViewController {
-            controller.dismissViewControllerAnimated(true, completion: nil)
-        }
+        self.statusContainer.hidden = true
     }
     
     func prependHistoricalMessages(messages: [ARTBaseMessage]) {
@@ -150,7 +153,7 @@ extension ChatViewController: ChatModelDelegate {
     }
     
     func chatModelLoadingHistory(chatModel: ChatModel) {
-        self.showNotice("loading", message: "'Hang on a sec, loading the chat history...")
+        self.showNotice("loading", message: "Hang on a sec, loading the chat history...")
         self.clearMessages()
     }
     

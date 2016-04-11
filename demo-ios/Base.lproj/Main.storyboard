@@ -3,7 +3,13 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="icomoon.ttf">
+            <string>icomoon</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Edit Name View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -142,10 +148,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="WEE-jR-CEM">
-                                                    <rect key="frame" x="272" y="9" width="55.5" height="27"/>
+                                                    <rect key="frame" x="191.5" y="9" width="216.5" height="27"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3O-r7-hO1">
-                                                            <rect key="frame" x="10" y="5" width="35.5" height="17"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User1 has entered the channel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3O-r7-hO1">
+                                                            <rect key="frame" x="10" y="5" width="196.5" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.81176470588235294" green="0.81176470588235294" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -237,21 +243,58 @@
                                     <constraint firstItem="19e-ww-plk" firstAttribute="centerY" secondItem="Rcn-DX-tJf" secondAttribute="centerY" id="n59-pN-iYZ"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvg-WY-QdE" userLabel="StatusContainer">
+                                <rect key="frame" x="0.0" y="20" width="600" height="23"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hang on, loading chat history" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Nk-Vm-mHK" userLabel="StatusText">
+                                        <rect key="frame" x="47" y="1" width="224" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fc8-QE-cLr" userLabel="StatusIcon">
+                                        <rect key="frame" x="20" y="3" width="17" height="17"/>
+                                        <fontDescription key="fontDescription" name="icomoon" family="icomoon" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="0Nk-Vm-mHK" firstAttribute="leading" secondItem="Fc8-QE-cLr" secondAttribute="trailing" constant="10" id="DTd-V8-z6w"/>
+                                    <constraint firstItem="Fc8-QE-cLr" firstAttribute="centerY" secondItem="hvg-WY-QdE" secondAttribute="centerY" id="KxB-XR-rcR"/>
+                                    <constraint firstItem="0Nk-Vm-mHK" firstAttribute="centerY" secondItem="hvg-WY-QdE" secondAttribute="centerY" id="Zla-2J-nQC"/>
+                                    <constraint firstAttribute="height" constant="23" id="cX6-KV-Cey"/>
+                                    <constraint firstItem="Fc8-QE-cLr" firstAttribute="leading" secondItem="hvg-WY-QdE" secondAttribute="leading" constant="20" id="s1m-CA-f6S"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Rcn-DX-tJf" firstAttribute="centerX" secondItem="Ir8-nG-pBu" secondAttribute="centerX" id="2Zp-5T-08C"/>
+                            <constraint firstItem="hvg-WY-QdE" firstAttribute="width" secondItem="Ir8-nG-pBu" secondAttribute="width" id="4ke-kH-agr"/>
                             <constraint firstItem="LfS-Pl-ydr" firstAttribute="centerX" secondItem="Ir8-nG-pBu" secondAttribute="centerX" id="7a7-9V-F9D"/>
+                            <constraint firstItem="hvg-WY-QdE" firstAttribute="centerX" secondItem="Ir8-nG-pBu" secondAttribute="centerX" id="PVk-50-HXV"/>
                             <constraint firstItem="582-uc-mMe" firstAttribute="top" secondItem="Rcn-DX-tJf" secondAttribute="bottom" id="Tpa-mw-p5X"/>
+                            <constraint firstItem="hvg-WY-QdE" firstAttribute="top" secondItem="q5d-ez-sUV" secondAttribute="bottom" id="Ugj-te-Tnr"/>
                             <constraint firstItem="Rcn-DX-tJf" firstAttribute="top" secondItem="LfS-Pl-ydr" secondAttribute="bottom" id="a3k-hu-tAc"/>
                             <constraint firstItem="Rcn-DX-tJf" firstAttribute="width" secondItem="Ir8-nG-pBu" secondAttribute="width" id="c9v-JY-L3t"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hvg-WY-QdE" secondAttribute="trailing" constant="160" id="cWq-C2-AyZ"/>
                             <constraint firstItem="LfS-Pl-ydr" firstAttribute="top" secondItem="q5d-ez-sUV" secondAttribute="bottom" id="rDu-Ni-cfX"/>
                             <constraint firstItem="LfS-Pl-ydr" firstAttribute="width" secondItem="Ir8-nG-pBu" secondAttribute="width" id="tJ4-wc-FAH"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="cWq-C2-AyZ"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="membersCountLabel" destination="DAb-HL-DT7" id="WIo-WS-Cou"/>
                         <outlet property="messagesTableView" destination="LfS-Pl-ydr" id="bJ6-Qh-gwj"/>
+                        <outlet property="statusContainer" destination="hvg-WY-QdE" id="Vun-jt-B2c"/>
+                        <outlet property="statusIcon" destination="Fc8-QE-cLr" id="RuJ-7o-vPf"/>
+                        <outlet property="statusText" destination="0Nk-Vm-mHK" id="nBm-SR-t7A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ee-hH-E5N" userLabel="First Responder" sceneMemberID="firstResponder"/>
