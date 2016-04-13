@@ -147,7 +147,6 @@ extension ChatViewController: ChatModelDelegate {
         
     }
     
-    
     func chatModelDidFinishSendingMessage(chatModel: ChatModel) {
         self.hideNotice("sending")
     }
@@ -171,7 +170,8 @@ extension ChatViewController: ChatModelDelegate {
     }
     
     func chatModel(chatModel: ChatModel, membersDidUpdate members: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
-
+        guard presenceMessage.action != .Update else { return }
+        
         self.messages.append(presenceMessage)
         self.messagesTableView.reloadData()
         self.updateMembers(members)
