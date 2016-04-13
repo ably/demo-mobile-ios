@@ -144,7 +144,14 @@ extension ChatViewController: ChatModelDelegate {
     }
     
     func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage) {
+        self.messages.append(message)
+        self.messagesTableView.reloadData()
         
+        // Scroll to the bottom of messages
+        let rows = self.messagesTableView.numberOfRowsInSection(0)
+        if rows > 0 {
+            self.messagesTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: rows - 1, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        }
     }
     
     func chatModelDidFinishSendingMessage(chatModel: ChatModel) {
