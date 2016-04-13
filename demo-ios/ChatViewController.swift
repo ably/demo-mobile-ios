@@ -128,6 +128,16 @@ extension ChatViewController: UITableViewDataSource {
         
         return tableView.dequeueReusableCellWithIdentifier("")!
     }
+    
+    func scrollToBottom(tableView: UITableView) {
+        let tableRows = tableView.numberOfRowsInSection(0)
+        if tableRows > 0
+        {
+            let lastMessageIndex = tableRows - 1
+            let lastMessageIndexPath = NSIndexPath(forRow: lastMessageIndex, inSection: 0)
+            tableView.scrollToRowAtIndexPath(lastMessageIndexPath, atScrollPosition: .Bottom, animated: true)
+        }
+    }
 }
 
 class PresenceMessageCell: UITableViewCell {
@@ -146,12 +156,7 @@ extension ChatViewController: ChatModelDelegate {
     func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage) {
         self.messages.append(message)
         self.messagesTableView.reloadData()
-        
-        // Scroll to the bottom of messages
-        let rows = self.messagesTableView.numberOfRowsInSection(0)
-        if rows > 0 {
-            self.messagesTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: rows - 1, inSection: 0), atScrollPosition: .Bottom, animated: true)
-        }
+        self.scrollToBottom(self.messagesTableView)
     }
     
     func chatModelDidFinishSendingMessage(chatModel: ChatModel) {
@@ -166,14 +171,7 @@ extension ChatViewController: ChatModelDelegate {
     func chatModel(chatModel: ChatModel, historyDidLoadWithMessages messages: [ARTBaseMessage]) {
         self.hideNotice("loading")
         self.prependHistoricalMessages(messages)
-        
-        let tableRows = self.messagesTableView!.numberOfRowsInSection(0)
-        if tableRows > 0
-        {
-            let lastMessageIndex = tableRows - 1
-            let lastMessageIndexPath = NSIndexPath(forRow: lastMessageIndex, inSection: 0)
-            self.messagesTableView.scrollToRowAtIndexPath(lastMessageIndexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-        }
+        self.scrollToBottom(self.messagesTableView)
     }
     
     func chatModel(chatModel: ChatModel, membersDidUpdate members: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
