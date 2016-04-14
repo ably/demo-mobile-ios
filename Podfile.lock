@@ -1,25 +1,32 @@
 PODS:
-  - Ably (0.8.0-beta.1):
+  - AblyRealtime (0.8.0):
     - SwiftWebSocket (~> 2.5)
   - GradientView (2.1.0)
   - SwiftWebSocket (2.5.0)
 
 DEPENDENCIES:
-  - Ably (from `https://github.com/ably/ably-ios.git`, branch `master`)
+  - AblyRealtime (from `https://github.com/ably/ably-ios.git`, tag `0.8.1-swift2.1`)
   - GradientView
+  - SwiftWebSocket (from `https://github.com/tidwall/SwiftWebSocket.git`, tag `2.5.0`)
 
 EXTERNAL SOURCES:
-  Ably:
-    :branch: master
+  AblyRealtime:
     :git: https://github.com/ably/ably-ios.git
+    :tag: 0.8.1-swift2.1
+  SwiftWebSocket:
+    :git: https://github.com/tidwall/SwiftWebSocket.git
+    :tag: 2.5.0
 
 CHECKOUT OPTIONS:
-  Ably:
-    :commit: e776f1947f9d513cb45c9fac8a19c3a63e30c414
+  AblyRealtime:
     :git: https://github.com/ably/ably-ios.git
+    :tag: 0.8.1-swift2.1
+  SwiftWebSocket:
+    :git: https://github.com/tidwall/SwiftWebSocket.git
+    :tag: 2.5.0
 
 SPEC CHECKSUMS:
-  Ably: bc0d494bc05f26ac67c1f57b2f846b01f7d3e175
+  AblyRealtime: 052b01520a16ef594b735581835391d3ec5ab514
   GradientView: 4a961b8e9e1787beaf6880b9fc2dd08c6345533d
   SwiftWebSocket: 168cbde980dc3b5bac925a3d8186f82b3e87768e
 
