@@ -1,5 +1,6 @@
 import Foundation
-import Ably
+import AblyRealtime
+import UIKit
 
 class ChatViewController: UIViewController {
     private var messages = [ARTBaseMessage]()
@@ -70,7 +71,7 @@ class ChatViewController: UIViewController {
         }
         
         self.messages.sortInPlace { (msg1, msg2) -> Bool in
-            return msg1.timestamp.compare(msg2.timestamp) == .OrderedAscending
+            return msg1.timestamp!.compare(msg2.timestamp!) == .OrderedAscending
         }
         
         self.messagesTableView.reloadData()
@@ -119,7 +120,7 @@ extension ChatViewController: UITableViewDataSource {
                 dateFormatter.timeStyle = .ShortStyle
                 dateFormatter.dateStyle = .ShortStyle
                 
-                let dateText = dateFormatter.stringFromDate(presenceMessage.timestamp).lowercaseString
+                let dateText = dateFormatter.stringFromDate(presenceMessage.timestamp!).lowercaseString
                 
                 cell.presenceText?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel \(dateText)"
                 return cell

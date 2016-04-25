@@ -1,4 +1,5 @@
 import Foundation
+import AblyRealtime
 
 public protocol ChatModelDelegate {
     func chatModel(chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange)
@@ -54,7 +55,7 @@ public class ChatModel {
     }
     
     public func publishMessage(message: String) {
-        self.channel?.publish(self.clientId, data: message) { error in
+        self.channel?.publish(self.clientId, data: message, clientId: self.clientId) { error in
             guard error == nil else {
                 self.signalError(error!)
                 return
@@ -104,7 +105,7 @@ public class ChatModel {
                 return
             }
             
-            let members = result?.items as? [ARTPresenceMessage] ?? [ARTPresenceMessage]()
+            let members = result ?? [ARTPresenceMessage]()
             self.delegate?.chatModel(self, membersDidUpdate: members, presenceMessage: msg)
         }
     }
@@ -120,7 +121,7 @@ public class ChatModel {
             combinedMessageHistory.appendContentsOf(messageHistory! as [ARTBaseMessage])
             combinedMessageHistory.appendContentsOf(presenceHistory! as [ARTBaseMessage])
             combinedMessageHistory.sortInPlace({ (msg1, msg2) -> Bool in
-                return msg1.timestamp.compare(msg2.timestamp) == .OrderedAscending
+                return msg1.timestamp!.compare(msg2.timestamp!) == .OrderedAscending
             })
             
             self.delegate?.chatModel(self, historyDidLoadWithMessages: combinedMessageHistory)

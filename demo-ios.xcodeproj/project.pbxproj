@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A6C2C28F4B65A02E1A7A7F78 /* Pods_demo_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E47D32B68CB7956B288DFFD /* Pods_demo_ios.framework */; };
-		F6135B471B8F7B960068EF7C /* ably.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6135B461B8F7B960068EF7C /* ably.framework */; };
 		F6135B4C1B8F86D30068EF7C /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6135B4B1B8F86D30068EF7C /* ChatViewController.swift */; };
 		F64469E91C934EDA00420928 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64469E81C934EDA00420928 /* ChatModel.swift */; };
 		F6A6738E1CBC45FC003D56A9 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6A6738D1CBC3E44003D56A9 /* icomoon.ttf */; };
@@ -34,7 +33,6 @@
 		17865835C94F32E53F5A2642 /* Pods-demo-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-demo-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-demo-ios/Pods-demo-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		33E40DDC026CD3530386A8AD /* Pods-demo-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-demo-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-demo-ios/Pods-demo-ios.release.xcconfig"; sourceTree = "<group>"; };
 		7E47D32B68CB7956B288DFFD /* Pods_demo_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_demo_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6135B461B8F7B960068EF7C /* ably.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ably.framework; path = "Pods/../build/Debug-iphoneos/ably.framework"; sourceTree = "<group>"; };
 		F6135B481B8F7BAC0068EF7C /* demo-ios-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "demo-ios-Bridging-Header.h"; sourceTree = "<group>"; };
 		F6135B4B1B8F86D30068EF7C /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F64469E81C934EDA00420928 /* ChatModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
@@ -56,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6135B471B8F7B960068EF7C /* ably.framework in Frameworks */,
 				A6C2C28F4B65A02E1A7A7F78 /* Pods_demo_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,7 +80,6 @@
 		E76327C647DDA61768169813 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F6135B461B8F7B960068EF7C /* ably.framework */,
 				7E47D32B68CB7956B288DFFD /* Pods_demo_ios.framework */,
 			);
 			name = Frameworks;
