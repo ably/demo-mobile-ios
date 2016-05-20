@@ -1,4 +1,4 @@
-# [Ably](https://www.ably.io) Android mobile demo
+# [Ably](https://www.ably.io) iOS mobile demo
 
 Ably is a hugely scalable, superfast and secure hosted real-time messaging service for web-enabled devices. [Find out more about Ably](https://www.ably.io).
 
