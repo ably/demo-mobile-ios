@@ -94,8 +94,8 @@ public class ChatModel {
             self.loadHistory()
         }
         
-        channel.once(ARTChannelEvent.Detached, call: self.didChannelLoseState)
-        channel.once(ARTChannelEvent.Failed, call: self.didChannelLoseState)
+        channel.once(ARTChannelEvent.Detached, callback: self.didChannelLoseState)
+        channel.once(ARTChannelEvent.Failed, callback: self.didChannelLoseState)
     }
     
     private func membersChanged(msg: ARTPresenceMessage) {
