@@ -145,6 +145,16 @@ class PresenceMessageCell: UITableViewCell {
     @IBOutlet weak var presenceText: UILabel!
 }
 
+class ChatMessageMeCell: UITableViewCell {
+    @IBOutlet weak var handle: UILabel!
+    @IBOutlet weak var dateText: UILabel!
+    @IBOutlet weak var messageText: UILabel!
+}
+
+class ChatMessageNotMeCell: UITableViewCell {
+    
+}
+
 extension ChatViewController: ChatModelDelegate {
     func chatModel(chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange) {
         
