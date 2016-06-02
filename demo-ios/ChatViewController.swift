@@ -100,6 +100,16 @@ class ChatViewController: UIViewController {
     }
 }
 
+extension ChatViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if self.messages[indexPath.row] is ARTMessage {
+            return 85;
+        }
+        
+        return 35;
+    }
+}
+
 extension ChatViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.messages.count
@@ -107,21 +117,24 @@ extension ChatViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let message = self.messages[indexPath.row] as? ARTMessage {
-            if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessage") {
-                cell.textLabel?.text = message.data?.description
-                return cell
+            if message.clientId == self.clientId {
+                if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessageMe") as? ChatMessageMeCell {
+                    cell.dateText?.text = message.timestamp!.formatAsShortDate()
+                    cell.messageText?.text = message.data?.description
+                    return cell
+                }
+            } else {
+                if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessageNotMe") {
+                    cell.textLabel?.text = message.data?.description
+                    return cell
+                }
             }
         }
 
         if let presenceMessage = self.messages[indexPath.row] as? ARTPresenceMessage {
             if let cell = tableView.dequeueReusableCellWithIdentifier("PresenceMessage") as? PresenceMessageCell {
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.doesRelativeDateFormatting = true
-                dateFormatter.timeStyle = .ShortStyle
-                dateFormatter.dateStyle = .ShortStyle
                 
-                let dateText = dateFormatter.stringFromDate(presenceMessage.timestamp!).lowercaseString
-                
+                let dateText = presenceMessage.timestamp!.formatAsShortDate()
                 cell.presenceText?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel \(dateText)"
                 return cell
             }
@@ -143,6 +156,32 @@ extension ChatViewController: UITableViewDataSource {
 
 class PresenceMessageCell: UITableViewCell {
     @IBOutlet weak var presenceText: UILabel!
+}
+
+class ChatMessageMeCell: UITableViewCell {
+    @IBOutlet weak var dateText: UILabel!
+    @IBOutlet weak var messageText: UILabel!
+    @IBOutlet weak var background: UIImageView!
+    
+    func ChatMessageCell() {
+        
+    }
+}
+
+class ChatMessageNotMeCell: UITableViewCell {
+    
+}
+
+extension NSDate {
+    func formatAsShortDate() -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.doesRelativeDateFormatting = true
+        dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.dateStyle = .ShortStyle
+        
+        let dateText = dateFormatter.stringFromDate(self).lowercaseString
+        return dateText
+    }
 }
 
 extension ChatViewController: ChatModelDelegate {
