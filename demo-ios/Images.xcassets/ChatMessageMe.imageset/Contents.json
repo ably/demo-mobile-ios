@@ -1,8 +1,22 @@
 {
   "images" : [
     {
+      "resizing" : {
+        "mode" : "9-part",
+        "center" : {
+          "mode" : "tile",
+          "width" : 1,
+          "height" : 1
+        },
+        "cap-insets" : {
+          "bottom" : 39,
+          "top" : 8,
+          "right" : 14,
+          "left" : 7
+        }
+      },
       "idiom" : "universal",
-      "filename" : "chat_message_outgoing_bubble.9.png",
+      "filename" : "ChatMessageMe.png",
       "scale" : "1x"
     },
     {
