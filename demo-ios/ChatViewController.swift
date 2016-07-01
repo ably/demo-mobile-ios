@@ -19,7 +19,7 @@ class ChatViewController: UIViewController {
     var clientId: String!
     
     @IBAction func userTyping(sender: AnyObject) {
-
+        self.model.sendTypingNotification(true)
     }
     
     @IBAction func userDidSendMessage(sender: AnyObject) {
@@ -33,7 +33,7 @@ class ChatViewController: UIViewController {
             
             self.showNotice("sending", message: "Sending message")
             self.model.publishMessage(text)
-            //self.model.sendTypingNotification(false)
+            self.model.sendTypingNotification(false)
         }
     }
     override func viewDidLoad() {

@@ -15,6 +15,7 @@ public class ChatModel {
     private var ablyClientOptions: ARTClientOptions
     private var ablyRealtime: ARTRealtime?
     private var channel: ARTRealtimeChannel?
+    private var isUserTyping = false
     
     public var clientId: String
     public var delegate: ChatModelDelegate?
@@ -63,6 +64,16 @@ public class ChatModel {
             
             self.delegate?.chatModelDidFinishSendingMessage(self)
         }
+    }
+    
+    public func sendTypingNotification(typing: Bool) {
+        // Don't send a 'is typing' notification if user is already typing
+        if (self.isUserTyping && typing) {
+            return;
+        }
+        
+        self.channel?.presence.update(["isTyping": typing])
+        self.isUserTyping = typing;
     }
     
     private func detachHandlers() {
