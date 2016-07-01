@@ -28,6 +28,16 @@ public class ChatModel {
         ablyClientOptions.authUrl = NSURL(string: "https://www.ably.io/ably-auth/token-details/demos")
         ablyClientOptions.clientId = clientId
         ablyClientOptions.logLevel = .Verbose
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatModel.applicationWillResignActiveEventReceived(_:)),
+                                                         name: "applicationWillResignActive",
+                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatModel.applicationWillEnterForegroundEventReceived(_:)),
+                                                         name: "applicationWillEnterForeground",
+                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatModel.applicationWillEnterForegroundEventReceived(_:)),
+                                                         name: "applicationDidBecomeActive",
+                                                         object: nil)
     }
     
     public func connect() {
@@ -55,6 +65,16 @@ public class ChatModel {
         self.joinChannel()
     }
     
+    // Explicitly reconnect to Ably and joins channel
+    public func reconnect() {
+        self.connect()
+    };
+    
+    // Leaves channel by disconnecting from Ably
+    public func disconnect() {
+        self.ablyRealtime?.connection.close()
+    };
+
     public func publishMessage(message: String) {
         self.channel?.publish(self.clientId, data: message, clientId: self.clientId) { error in
             guard error == nil else {
@@ -206,5 +226,13 @@ public class ChatModel {
     private func delay(delay: Double, block: () -> Void) {
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
         dispatch_after(time, dispatch_get_main_queue(), block)
+    }
+
+    @objc private func applicationWillResignActiveEventReceived(notification: NSNotification) {
+        self.disconnect()
+    }
+    
+    @objc private func applicationWillEnterForegroundEventReceived(notification: NSNotification) {
+        self.reconnect()
     }
 }
