@@ -7,9 +7,11 @@ class ChatViewController: UIViewController {
     private var realtime: ARTRealtime!
     private var channel: ARTRealtimeChannel!
     private var model: ChatModel!
+    private var members: [ARTPresenceMessage] = [ARTPresenceMessage]()
     
     @IBOutlet weak var statusContainer: UIView!
 
+    @IBOutlet weak var messageTextField: UITextField!
     @IBOutlet weak var statusText: UILabel!
     @IBOutlet weak var statusIcon: UILabel!
     @IBOutlet weak var messagesTableView: UITableView!
@@ -81,6 +83,17 @@ class ChatViewController: UIViewController {
         let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func handleMembersContainerTap(sender: AnyObject) {
+        let controller = UIAlertController(title: "Handles", message: nil, preferredStyle: .ActionSheet)
+        for member in self.members {
+            let action = UIAlertAction(title: member.clientId, style: .Default, handler: { action -> Void in
+                self.messageTextField.text! += "@\(action.title!) "
+            })
+            controller.addAction(action)
+        }
+        self.presentViewController(controller, animated: true, completion: nil)
     }
     
     private func descriptionForPresenceAction(presenceAction: ARTPresenceAction) -> String {
@@ -223,6 +236,8 @@ extension ChatViewController: ChatModelDelegate {
     
     func chatModel(chatModel: ChatModel, membersDidUpdate members: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
         guard presenceMessage.action != .Update else { return }
+
+        self.members = members
         
         self.messages.append(presenceMessage)
         self.messagesTableView.reloadData()
