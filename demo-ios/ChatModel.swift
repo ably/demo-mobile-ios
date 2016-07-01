@@ -176,7 +176,7 @@ public class ChatModel {
         let query = ARTRealtimeHistoryQuery()
         query.limit = 50
         query.direction = .Backwards
-        query.untilAttach = false
+        query.untilAttach = true
         return query
     }
 

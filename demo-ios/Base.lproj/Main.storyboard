@@ -145,13 +145,13 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H0d-Es-9Pw" userLabel="Date Text">
                                                     <rect key="frame" x="489" y="13" width="73" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eko-zQ-K9Y" userLabel="Message Text">
                                                     <rect key="frame" x="28" y="0.0" width="554" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -173,13 +173,60 @@
                                             <outlet property="messageText" destination="Eko-zQ-K9Y" id="QpQ-YE-7aw"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="center" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageNotMe" id="3Hc-9F-e3w" customClass="PresenceMessageCell" customModule="demo_ios" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="center" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageNotMe" id="3Hc-9F-e3w" customClass="ChatMessageNotMeCell" customModule="demo_ios" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Hc-9F-e3w" id="f9V-Cg-tiy">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChatMessageNotMe" translatesAutoresizingMaskIntoConstraints="NO" id="ISR-vD-PMn" userLabel="Background">
+                                                    <rect key="frame" x="18" y="8" width="564" height="28"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ql9-8j-2UY" userLabel="Message Text">
+                                                    <rect key="frame" x="28" y="0.0" width="524" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4n-nO-blz" userLabel="Date Text">
+                                                    <rect key="frame" x="499" y="13" width="73" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@handle text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hg8-zi-dIi" userLabel="Handle Text">
+                                                    <rect key="frame" x="28" y="12" width="100.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="topMargin" secondItem="ISR-vD-PMn" secondAttribute="top" id="5XC-rK-1XB"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="ISR-vD-PMn" secondAttribute="bottom" id="6DY-8D-mZ0"/>
+                                                <constraint firstAttribute="topMargin" secondItem="a4n-nO-blz" secondAttribute="top" constant="-5" id="7YY-2X-WWL"/>
+                                                <constraint firstItem="hg8-zi-dIi" firstAttribute="top" secondItem="f9V-Cg-tiy" secondAttribute="topMargin" constant="4" id="By8-Zi-Xoz"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="ISR-vD-PMn" secondAttribute="trailing" constant="10" id="S9a-GT-y8b"/>
+                                                <constraint firstItem="a4n-nO-blz" firstAttribute="trailing" secondItem="Ql9-8j-2UY" secondAttribute="trailing" constant="20" id="cvE-hO-SHN"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="a4n-nO-blz" secondAttribute="trailing" constant="20" id="jhL-iE-s8Z"/>
+                                                <constraint firstItem="Ql9-8j-2UY" firstAttribute="leading" secondItem="ISR-vD-PMn" secondAttribute="leading" constant="10" id="o4b-IL-bQx"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Ql9-8j-2UY" secondAttribute="bottom" constant="15" id="oV3-s6-yiA"/>
+                                                <constraint firstItem="hg8-zi-dIi" firstAttribute="leading" secondItem="f9V-Cg-tiy" secondAttribute="leadingMargin" constant="15" id="p7Z-ko-WUW"/>
+                                                <constraint firstItem="hg8-zi-dIi" firstAttribute="leading" secondItem="ISR-vD-PMn" secondAttribute="leading" constant="10" id="xv8-dx-HkL"/>
+                                                <constraint firstItem="ISR-vD-PMn" firstAttribute="leading" secondItem="f9V-Cg-tiy" secondAttribute="leadingMargin" constant="10" id="zzy-Qb-PDC"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="p7Z-ko-WUW"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateText" destination="a4n-nO-blz" id="3LG-2v-hzB"/>
+                                            <outlet property="handleText" destination="hg8-zi-dIi" id="ZaR-5b-neM"/>
+                                            <outlet property="messageText" destination="Ql9-8j-2UY" id="as4-t7-VlI"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="center" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PresenceMessage" id="2ps-54-qUe" customClass="PresenceMessageCell" customModule="demo_ios" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="600" height="44"/>
@@ -361,6 +408,7 @@
     </scenes>
     <resources>
         <image name="ChatMessageMe" width="22" height="48"/>
+        <image name="ChatMessageNotMe" width="18" height="46"/>
         <image name="Members Icon" width="100" height="100"/>
         <image name="ably-logo" width="756" height="1188"/>
     </resources>

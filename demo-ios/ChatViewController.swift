@@ -124,8 +124,10 @@ extension ChatViewController: UITableViewDataSource {
                     return cell
                 }
             } else {
-                if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessageNotMe") {
-                    cell.textLabel?.text = message.data?.description
+                if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessageNotMe") as? ChatMessageNotMeCell {
+                    cell.messageText?.text = message.data?.description
+                    cell.dateText?.text = message.timestamp!.formatAsShortDate()
+                    cell.handleText?.text = message.clientId
                     return cell
                 }
             }
@@ -133,9 +135,12 @@ extension ChatViewController: UITableViewDataSource {
 
         if let presenceMessage = self.messages[indexPath.row] as? ARTPresenceMessage {
             if let cell = tableView.dequeueReusableCellWithIdentifier("PresenceMessage") as? PresenceMessageCell {
-                
                 let dateText = presenceMessage.timestamp!.formatAsShortDate()
-                cell.presenceText?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel \(dateText)"
+                if(presenceMessage.action == ARTPresenceAction.Leave || presenceMessage.action == .Enter) {
+                    cell.presenceText?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel \(dateText)"
+                    return cell
+                }
+
                 return cell
             }
         }
@@ -169,7 +174,9 @@ class ChatMessageMeCell: UITableViewCell {
 }
 
 class ChatMessageNotMeCell: UITableViewCell {
-    
+    @IBOutlet weak var messageText: UILabel!
+    @IBOutlet weak var dateText: UILabel!
+    @IBOutlet weak var handleText: UILabel!
 }
 
 extension NSDate {
