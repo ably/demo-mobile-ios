@@ -15,7 +15,7 @@ This iOS demo uses the Ably real-time message service and provides a simple exam
 * Open a terminal, navigate to the cloned repository and type `pod install` to install all dependencies
 * After that, open Xcode and select `Open another project`.
 * Locate and open `demo-ios.xcworkspace`.
-* From the top toolbar in Xcode select either one of the provided simulator devices, or a real hardware device.
+* From the top toolbar in Xcode select either one of the provided simulator devices, or a [real hardware device](https://developer.apple.com/library/mac/documentation/IDEs/Conceptual/AppDistributionGuide/LaunchingYourApponDevices/LaunchingYourApponDevices.html).
 * Use the `Product -> Run` menu to either run or debug the application.
 * Use the app.
 
