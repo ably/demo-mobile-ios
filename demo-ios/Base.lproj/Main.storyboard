@@ -62,7 +62,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="OFi-7B-sOV" kind="show" id="KgE-tO-Sta"/>
+                                            <segue destination="OFi-7B-sOV" kind="show" identifier="DefaultSegue" id="KgE-tO-Sta"/>
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="@handle" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="y5r-xH-gli">
@@ -77,6 +77,9 @@
                                                 <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="primaryActionTriggered:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="dgs-Ef-VI6"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

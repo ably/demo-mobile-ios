@@ -1,6 +1,7 @@
 import Foundation
 import AblyRealtime
 import UIKit
+import IHKeyboardAvoiding
 
 class ChatViewController: UIViewController {
     private var messages = [ARTBaseMessage]()
@@ -38,6 +39,8 @@ class ChatViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        IHKeyboardAvoiding.setAvoidingView(self.view)
         
         self.model = ChatModel(clientId: self.clientId)
         self.model.delegate = self
