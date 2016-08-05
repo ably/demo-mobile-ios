@@ -30,6 +30,8 @@ class EditNameViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        self.nameTextField.endEditing(true)
+        
         let clientId = nameTextField.text
         let chatViewController = segue.destinationViewController as! ChatViewController;
         
