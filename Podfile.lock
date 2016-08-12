@@ -1,12 +1,12 @@
 PODS:
-  - AblyRealtime (0.8.2):
+  - AblyRealtime (0.8.4):
     - msgpack (= 0.1.8)
     - SocketRocket (= 0.5.1)
-  - GradientView (2.1.0)
+  - GradientView (2.1.1)
   - IHKeyboardAvoiding (2.6)
   - msgpack (0.1.8)
   - SocketRocket (0.5.1)
-  - SwiftWebSocket (2.6.1)
+  - SwiftWebSocket (2.6.3)
 
 DEPENDENCIES:
   - AblyRealtime
@@ -20,15 +20,15 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SwiftWebSocket:
-    :commit: d69d6c88e16f0c8ecf6d542e46a30dc37362adf2
+    :commit: 1c6c5dae5e960f1f16946241c4fac78b73832fb7
     :git: https://github.com/tidwall/SwiftWebSocket.git
 
 SPEC CHECKSUMS:
-  AblyRealtime: 88683bc9d46e810c9f41d2d990c43b5150b96eab
-  GradientView: 4a961b8e9e1787beaf6880b9fc2dd08c6345533d
+  AblyRealtime: 1f512af9778d805f6d2700e8d19952a22128e4a3
+  GradientView: 8e1295d3614a8b55f4a4b8c95529b0748d154c84
   IHKeyboardAvoiding: d2541ee56dad83e160cd9aed0468c52247af6f49
   msgpack: 97491d2ea799408f4694f2c7d7fd79baf77853dd
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
-  SwiftWebSocket: ccace0c3843fa5dc5a571506b01dcbb8f8d0add8
+  SwiftWebSocket: 76e3ade5d716a80440dbf859b39b05d842f80d03
 
 COCOAPODS: 0.39.0
