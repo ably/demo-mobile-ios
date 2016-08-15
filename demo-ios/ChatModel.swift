@@ -23,11 +23,13 @@ public class ChatModel {
     
     public init(clientId: String) {
         self.clientId = clientId
+        let urlEncodedClientId = clientId.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         
         ablyClientOptions = ARTClientOptions()
-        ablyClientOptions.authUrl = NSURL(string: "https://www.ably.io/ably-auth/token-details/demos")
-        ablyClientOptions.clientId = clientId
+        ablyClientOptions.authUrl = NSURL(string: "https://www.ably.io/ably-auth/token-request/demos?clientId=\(urlEncodedClientId)")
         ablyClientOptions.logLevel = .Verbose
+        
+        print("Encoded client id is |\(urlEncodedClientId)| , url is |\(ablyClientOptions.authUrl)|")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatModel.applicationWillResignActiveEventReceived(_:)),
                                                          name: "applicationWillResignActive",
