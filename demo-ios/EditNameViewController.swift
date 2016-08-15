@@ -34,8 +34,6 @@ class EditNameViewController: UIViewController {
         
         let clientId = nameTextField.text
         let chatViewController = segue.destinationViewController as! ChatViewController;
-        
-        // JSQMessagesViewController requires properly set senderId and senderDisplayName
         chatViewController.clientId = clientId
     }
     
