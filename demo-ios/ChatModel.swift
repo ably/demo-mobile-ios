@@ -1,46 +1,46 @@
 import Foundation
-import AblyRealtime
+import Ably
 
 public protocol ChatModelDelegate {
-    func chatModel(chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange)
-    func chatModelLoadingHistory(chatModel: ChatModel)
-    func chatModelDidFinishSendingMessage(chatModel: ChatModel)
-    func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage)
-    func chatModel(chatModel: ChatModel, didReceiveError error: ARTErrorInfo)
-    func chatModel(chatModel: ChatModel, historyDidLoadWithMessages: [ARTBaseMessage])
-    func chatModel(chatModel: ChatModel, membersDidUpdate: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage)
+    func chatModel(_ chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange)
+    func chatModelLoadingHistory(_ chatModel: ChatModel)
+    func chatModelDidFinishSendingMessage(_ chatModel: ChatModel)
+    func chatModel(_ chatModel: ChatModel, didReceiveMessage message: ARTMessage)
+    func chatModel(_ chatModel: ChatModel, didReceiveError error: ARTErrorInfo)
+    func chatModel(_ chatModel: ChatModel, historyDidLoadWithMessages: [ARTBaseMessage])
+    func chatModel(_ chatModel: ChatModel, membersDidUpdate: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage)
 }
 
-public class ChatModel {
-    private var ablyClientOptions: ARTClientOptions
-    private var ablyRealtime: ARTRealtime?
-    private var channel: ARTRealtimeChannel?
-    private var isUserTyping = false
+open class ChatModel {
+    fileprivate var ablyClientOptions: ARTClientOptions
+    fileprivate var ablyRealtime: ARTRealtime?
+    fileprivate var channel: ARTRealtimeChannel?
+    fileprivate var isUserTyping = false
     
-    public var clientId: String
-    public var delegate: ChatModelDelegate?
-    public var hasAppJoined = false
+    open var clientId: String
+    open var delegate: ChatModelDelegate?
+    open var hasAppJoined = false
     
     public init(clientId: String) {
         self.clientId = clientId
         
         ablyClientOptions = ARTClientOptions()
-        ablyClientOptions.authUrl = NSURL(string: "https://www.ably.io/ably-auth/token-details/demos")
+        ablyClientOptions.authUrl = URL(string: "https://www.ably.io/ably-auth/token-details/demos")
         ablyClientOptions.clientId = clientId
-        ablyClientOptions.logLevel = .Verbose
+        ablyClientOptions.logLevel = .verbose
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatModel.applicationWillResignActiveEventReceived(_:)),
-                                                         name: "applicationWillResignActive",
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatModel.applicationWillResignActiveEventReceived(_:)),
+                                                         name: NSNotification.Name(rawValue: "applicationWillResignActive"),
                                                          object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatModel.applicationWillEnterForegroundEventReceived(_:)),
-                                                         name: "applicationWillEnterForeground",
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatModel.applicationWillEnterForegroundEventReceived(_:)),
+                                                         name: NSNotification.Name(rawValue: "applicationWillEnterForeground"),
                                                          object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatModel.applicationWillEnterForegroundEventReceived(_:)),
-                                                         name: "applicationDidBecomeActive",
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatModel.applicationWillEnterForegroundEventReceived(_:)),
+                                                         name: NSNotification.Name(rawValue: "applicationDidBecomeActive"),
                                                          object: nil)
     }
     
-    public func connect() {
+    open func connect() {
         detachHandlers()
         
         self.ablyRealtime = ARTRealtime(options: self.ablyClientOptions)
@@ -51,9 +51,9 @@ public class ChatModel {
                 self.delegate?.chatModel(self, connectionStateChanged: stateChange)
                 
                 switch stateChange.current {
-                case .Disconnected:
+                case .disconnected:
                     self.attemptReconnect(5000)
-                case .Suspended:
+                case .suspended:
                     self.attemptReconnect(15000)
                 default:
                     break
@@ -66,16 +66,16 @@ public class ChatModel {
     }
     
     // Explicitly reconnect to Ably and joins channel
-    public func reconnect() {
+    open func reconnect() {
         self.connect()
     };
     
     // Leaves channel by disconnecting from Ably
-    public func disconnect() {
+    open func disconnect() {
         self.ablyRealtime?.connection.close()
     };
 
-    public func publishMessage(message: String) {
+    open func publishMessage(_ message: String) {
         self.channel?.publish(self.clientId, data: message, clientId: self.clientId) { error in
             guard error == nil else {
                 self.signalError(error!)
@@ -86,7 +86,7 @@ public class ChatModel {
         }
     }
     
-    public func sendTypingNotification(typing: Bool) {
+    open func sendTypingNotification(_ typing: Bool) {
         // Don't send a 'is typing' notification if user is already typing
         if (self.isUserTyping && typing) {
             return;
@@ -96,17 +96,17 @@ public class ChatModel {
         self.isUserTyping = typing;
     }
     
-    private func detachHandlers() {
+    fileprivate func detachHandlers() {
         
     }
     
-    private func attemptReconnect(delay: Double) {
+    fileprivate func attemptReconnect(_ delay: Double) {
         self.delay(delay) {
             self.ablyRealtime?.connect()
         }
     }
     
-    private func joinChannel() {
+    fileprivate func joinChannel() {
         guard let channel = self.channel else { return }
         let presence = channel.presence
 
@@ -125,14 +125,14 @@ public class ChatModel {
             self.loadHistory()
         }
         
-        channel.once(ARTChannelEvent.Detached, callback: self.didChannelLoseState)
-        channel.once(ARTChannelEvent.Failed, callback: self.didChannelLoseState)
+        channel.once(.detached, callback: self.didChannelLoseState)
+        channel.once(.failed, callback: self.didChannelLoseState)
     }
     
-    private func membersChanged(msg: ARTPresenceMessage) {
+    fileprivate func membersChanged(_ msg: ARTPresenceMessage) {
         self.channel?.presence.get() { (result, error) in
             guard error == nil else {
-                self.signalError(ARTErrorInfo.createWithNSError(error!))
+                self.signalError(ARTErrorInfo.create(from: error!))
                 return
             }
             
@@ -141,7 +141,7 @@ public class ChatModel {
         }
     }
     
-    private func loadHistory() {
+    fileprivate func loadHistory() {
         var messageHistory: [ARTMessage]? = nil
         var presenceHistory: [ARTPresenceMessage]? = nil
         
@@ -149,10 +149,10 @@ public class ChatModel {
             guard messageHistory != nil && presenceHistory != nil else { return }
 
             var combinedMessageHistory = [ARTBaseMessage]()
-            combinedMessageHistory.appendContentsOf(messageHistory! as [ARTBaseMessage])
-            combinedMessageHistory.appendContentsOf(presenceHistory! as [ARTBaseMessage])
-            combinedMessageHistory.sortInPlace({ (msg1, msg2) -> Bool in
-                return msg1.timestamp!.compare(msg2.timestamp!) == .OrderedAscending
+            combinedMessageHistory.append(contentsOf: messageHistory! as [ARTBaseMessage])
+            combinedMessageHistory.append(contentsOf: presenceHistory! as [ARTBaseMessage])
+            combinedMessageHistory.sort(by: { (msg1, msg2) -> Bool in
+                return msg1.timestamp!.compare(msg2.timestamp!) == .orderedAscending
             })
             
             self.delegate?.chatModel(self, historyDidLoadWithMessages: combinedMessageHistory)
@@ -169,70 +169,70 @@ public class ChatModel {
         }
     }
     
-    private func getMessagesHistory(callback: [ARTMessage] -> Void) {
+    fileprivate func getMessagesHistory(_ callback: @escaping ([ARTMessage]) -> Void) {
         do {
             try self.channel!.history(self.createHistoryQueryOptions()) { (result, error) in
                 guard error == nil else {
-                    self.signalError(ARTErrorInfo.createWithNSError(error!))
+                    self.signalError(ARTErrorInfo.create(from: error!))
                     return
                 }
                 
-                let items = result?.items as? [ARTMessage] ?? [ARTMessage]()
+                let items = result?.items ?? [ARTMessage]()
                 callback(items)
             }
         }
         catch let error as NSError {
-            self.signalError(ARTErrorInfo.createWithNSError(error))
+            self.signalError(ARTErrorInfo.create(from: error))
         }
     }
     
-    private func getPresenceHistory(callback: [ARTPresenceMessage] -> Void) {
+    fileprivate func getPresenceHistory(_ callback: @escaping ([ARTPresenceMessage]) -> Void) {
         do {
             try self.channel!.presence.history(self.createHistoryQueryOptions()) { (result, error) in
                 guard error == nil else {
-                    self.signalError(ARTErrorInfo.createWithNSError(error!))
+                    self.signalError(ARTErrorInfo.create(from: error!))
                     return
                 }
                 
-                let items = result?.items as? [ARTPresenceMessage] ?? [ARTPresenceMessage]()
+                let items = result?.items ?? [ARTPresenceMessage]()
                 callback(items)
             }
         }
         catch let error as NSError {
-            self.signalError(ARTErrorInfo.createWithNSError(error))
+            self.signalError(ARTErrorInfo.create(from: error))
         }
     }
 
-    private func createHistoryQueryOptions() -> ARTRealtimeHistoryQuery {
+    fileprivate func createHistoryQueryOptions() -> ARTRealtimeHistoryQuery {
         let query = ARTRealtimeHistoryQuery()
         query.limit = 50
-        query.direction = .Backwards
+        query.direction = .backwards
         query.untilAttach = true
         return query
     }
 
-    private func didChannelLoseState(error: ARTErrorInfo?) {
+    @objc func didChannelLoseState(_ stateChange: ARTChannelStateChange?) {
         self.channel?.unsubscribe()
         self.channel?.presence.unsubscribe()
-        self.ablyRealtime?.connection.once(.Connected) { state in
+        self.ablyRealtime?.connection.once(.connected) { state in
             self.joinChannel()
         }
     }
     
-    private func signalError(error: ARTErrorInfo) {
+    fileprivate func signalError(_ error: ARTErrorInfo) {
         self.delegate?.chatModel(self, didReceiveError: error)
     }
     
-    private func delay(delay: Double, block: () -> Void) {
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
-        dispatch_after(time, dispatch_get_main_queue(), block)
+    fileprivate func delay(_ delay: Double, block: @escaping () -> Void) {
+        let time = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: time, execute: block)
     }
 
-    @objc private func applicationWillResignActiveEventReceived(notification: NSNotification) {
+    @objc fileprivate func applicationWillResignActiveEventReceived(_ notification: Notification) {
         self.disconnect()
     }
     
-    @objc private func applicationWillEnterForegroundEventReceived(notification: NSNotification) {
+    @objc fileprivate func applicationWillEnterForegroundEventReceived(_ notification: Notification) {
         self.reconnect()
     }
 }

@@ -17,23 +17,23 @@ class EditNameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        IHKeyboardAvoiding.setAvoidingView(self.view)
+        KeyboardAvoiding.avoidingView = self.view
 
         let rootView = self.view as! GradientView
-        rootView.colors = [UIColor.whiteColor(), UIColor(white: 0.87, alpha: 1)]
+        rootView.colors = [UIColor.white, UIColor(white: 0.87, alpha: 1)]
         rootView.locations = [0.2, 0.95]
-        rootView.mode = .Radial
+        rootView.mode = .radial
     }
 
-    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
         return nameTextField.text != nil && !nameTextField.text!.isEmpty
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.nameTextField.endEditing(true)
         
         let clientId = nameTextField.text
-        let chatViewController = segue.destinationViewController as! ChatViewController;
+        let chatViewController = segue.destination as! ChatViewController;
         chatViewController.clientId = clientId
     }
     
@@ -42,8 +42,8 @@ class EditNameViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func primaryActionTriggered(sender: AnyObject) {
-        self.performSegueWithIdentifier("DefaultSegue", sender: self)
+    @IBAction func primaryActionTriggered(_ sender: AnyObject) {
+        self.performSegue(withIdentifier: "DefaultSegue", sender: self)
     }
 }
 

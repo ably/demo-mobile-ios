@@ -1,14 +1,14 @@
 import Foundation
-import AblyRealtime
+import Ably
 import UIKit
 import IHKeyboardAvoiding
 
 class ChatViewController: UIViewController {
-    private var messages = [ARTBaseMessage]()
-    private var realtime: ARTRealtime!
-    private var channel: ARTRealtimeChannel!
-    private var model: ChatModel!
-    private var members: [ARTPresenceMessage] = [ARTPresenceMessage]()
+    fileprivate var messages = [ARTBaseMessage]()
+    fileprivate var realtime: ARTRealtime!
+    fileprivate var channel: ARTRealtimeChannel!
+    fileprivate var model: ChatModel!
+    fileprivate var members: [ARTPresenceMessage] = [ARTPresenceMessage]()
     
     @IBOutlet weak var statusContainer: UIView!
 
@@ -19,13 +19,13 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var membersCountLabel: UILabel?
     var clientId: String!
     
-    @IBAction func userTyping(sender: AnyObject) {
+    @IBAction func userTyping(_ sender: AnyObject) {
         self.model.sendTypingNotification(true)
     }
     
-    @IBAction func userDidSendMessage(sender: AnyObject) {
-        if let messageTextField = sender as? UITextField, text = messageTextField.text{
-            if text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty {
+    @IBAction func userDidSendMessage(_ sender: AnyObject) {
+        if let messageTextField = sender as? UITextField, let text = messageTextField.text{
+            if text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
                 return
             }
             
@@ -40,7 +40,7 @@ class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        IHKeyboardAvoiding.setAvoidingView(self.view)
+        KeyboardAvoiding.avoidingView = self.view
         
         self.model = ChatModel(clientId: self.clientId)
         self.model.delegate = self
@@ -52,20 +52,20 @@ class ChatViewController: UIViewController {
         self.messagesTableView.reloadData()
     }
     
-    func showNotice(type: String, message: String?) {
-        self.statusContainer.hidden = false
+    func showNotice(_ type: String, message: String?) {
+        self.statusContainer.isHidden = false
         self.statusText.text =  message
         self.statusIcon.text = "\u{E600}"
     }
     
-    func hideNotice(type: String) {
-        self.statusContainer.hidden = true
+    func hideNotice(_ type: String) {
+        self.statusContainer.isHidden = true
     }
     
-    func prependHistoricalMessages(messages: [ARTBaseMessage]) {
+    func prependHistoricalMessages(_ messages: [ARTBaseMessage]) {
         for msg in messages {
             if let presenceMsg = msg as? ARTPresenceMessage {
-                if presenceMsg.action == .Enter || presenceMsg.action == .Leave {
+                if presenceMsg.action == .enter || presenceMsg.action == .leave {
                     self.messages.append(presenceMsg)
                 }
             }
@@ -75,49 +75,49 @@ class ChatViewController: UIViewController {
             }
         }
         
-        self.messages.sortInPlace { (msg1, msg2) -> Bool in
-            return msg1.timestamp!.compare(msg2.timestamp!) == .OrderedAscending
+        self.messages.sort { (msg1, msg2) -> Bool in
+            return msg1.timestamp!.compare(msg2.timestamp!) == .orderedAscending
         }
         
         self.messagesTableView.reloadData()
     }
     
-    func showError(error: String) {
-        let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+    func showError(_ error: String) {
+        let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func handleMembersContainerTap(sender: AnyObject) {
-        let controller = UIAlertController(title: "Handles", message: nil, preferredStyle: .ActionSheet)
+    @IBAction func handleMembersContainerTap(_ sender: AnyObject) {
+        let controller = UIAlertController(title: "Handles", message: nil, preferredStyle: .actionSheet)
         for member in self.members {
-            let action = UIAlertAction(title: member.clientId, style: .Default, handler: { action -> Void in
+            let action = UIAlertAction(title: member.clientId, style: .default, handler: { action -> Void in
                 self.messageTextField.text! += "@\(action.title!) "
             })
             controller.addAction(action)
         }
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)
     }
     
-    private func descriptionForPresenceAction(presenceAction: ARTPresenceAction) -> String {
+    fileprivate func descriptionForPresenceAction(_ presenceAction: ARTPresenceAction) -> String {
         switch presenceAction {
-        case .Enter:
+        case .enter:
             return "entered"
-        case .Leave:
+        case .leave:
             return "left"
         default:
             return ""
         }
     }
     
-    private func updateMembers(members: [ARTPresenceMessage]) {
+    fileprivate func updateMembers(_ members: [ARTPresenceMessage]) {
         self.membersCountLabel?.text = "\(members.count)"
         // TODO: implement rest of logic
     }
 }
 
 extension ChatViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if self.messages[indexPath.row] is ARTMessage {
             return 85;
         }
@@ -127,21 +127,21 @@ extension ChatViewController: UITableViewDelegate {
 }
 
 extension ChatViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.messages.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let message = self.messages[indexPath.row] as? ARTMessage {
             if message.clientId == self.clientId {
-                if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessageMe") as? ChatMessageMeCell {
+                if let cell = tableView.dequeueReusableCell(withIdentifier: "ChatMessageMe") as? ChatMessageMeCell {
                     cell.dateText?.text = message.timestamp!.formatAsShortDate()
-                    cell.messageText?.text = message.data?.description
+                    cell.messageText?.text = message.data as? String
                     return cell
                 }
             } else {
-                if let cell = tableView.dequeueReusableCellWithIdentifier("ChatMessageNotMe") as? ChatMessageNotMeCell {
-                    cell.messageText?.text = message.data?.description
+                if let cell = tableView.dequeueReusableCell(withIdentifier: "ChatMessageNotMe") as? ChatMessageNotMeCell {
+                    cell.messageText?.text = message.data as? String
                     cell.dateText?.text = message.timestamp!.formatAsShortDate()
                     cell.handleText?.text = message.clientId
                     return cell
@@ -150,9 +150,9 @@ extension ChatViewController: UITableViewDataSource {
         }
 
         if let presenceMessage = self.messages[indexPath.row] as? ARTPresenceMessage {
-            if let cell = tableView.dequeueReusableCellWithIdentifier("PresenceMessage") as? PresenceMessageCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "PresenceMessage") as? PresenceMessageCell {
                 let dateText = presenceMessage.timestamp!.formatAsShortDate()
-                if(presenceMessage.action == ARTPresenceAction.Leave || presenceMessage.action == .Enter) {
+                if(presenceMessage.action == .leave || presenceMessage.action == .enter) {
                     cell.presenceText?.text = "\(presenceMessage.clientId!) \(self.descriptionForPresenceAction(presenceMessage.action)) the channel \(dateText)"
                     return cell
                 }
@@ -161,16 +161,16 @@ extension ChatViewController: UITableViewDataSource {
             }
         }
         
-        return tableView.dequeueReusableCellWithIdentifier("")!
+        return tableView.dequeueReusableCell(withIdentifier: "")!
     }
     
-    func scrollToBottom(tableView: UITableView) {
-        let tableRows = tableView.numberOfRowsInSection(0)
+    func scrollToBottom(_ tableView: UITableView) {
+        let tableRows = tableView.numberOfRows(inSection: 0)
         if tableRows > 0
         {
             let lastMessageIndex = tableRows - 1
-            let lastMessageIndexPath = NSIndexPath(forRow: lastMessageIndex, inSection: 0)
-            tableView.scrollToRowAtIndexPath(lastMessageIndexPath, atScrollPosition: .Bottom, animated: true)
+            let lastMessageIndexPath = IndexPath(row: lastMessageIndex, section: 0)
+            tableView.scrollToRow(at: lastMessageIndexPath, at: .bottom, animated: true)
         }
     }
 }
@@ -195,50 +195,50 @@ class ChatMessageNotMeCell: UITableViewCell {
     @IBOutlet weak var handleText: UILabel!
 }
 
-extension NSDate {
+extension Date {
     func formatAsShortDate() -> String {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.doesRelativeDateFormatting = true
-        dateFormatter.timeStyle = .ShortStyle
-        dateFormatter.dateStyle = .ShortStyle
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .short
         
-        let dateText = dateFormatter.stringFromDate(self).lowercaseString
+        let dateText = dateFormatter.string(from: self).lowercased()
         return dateText
     }
 }
 
 extension ChatViewController: ChatModelDelegate {
-    func chatModel(chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange) {
+    func chatModel(_ chatModel: ChatModel, connectionStateChanged: ARTConnectionStateChange) {
         
     }
     
-    func chatModel(chatModel: ChatModel, didReceiveError error: ARTErrorInfo) {
+    func chatModel(_ chatModel: ChatModel, didReceiveError error: ARTErrorInfo) {
         self.showError(error.message)
     }
     
-    func chatModel(chatModel: ChatModel, didReceiveMessage message: ARTMessage) {
+    func chatModel(_ chatModel: ChatModel, didReceiveMessage message: ARTMessage) {
         self.messages.append(message)
         self.messagesTableView.reloadData()
         self.scrollToBottom(self.messagesTableView)
     }
     
-    func chatModelDidFinishSendingMessage(chatModel: ChatModel) {
+    func chatModelDidFinishSendingMessage(_ chatModel: ChatModel) {
         self.hideNotice("sending")
     }
     
-    func chatModelLoadingHistory(chatModel: ChatModel) {
+    func chatModelLoadingHistory(_ chatModel: ChatModel) {
         self.showNotice("loading", message: "Hang on a sec, loading the chat history...")
         self.clearMessages()
     }
     
-    func chatModel(chatModel: ChatModel, historyDidLoadWithMessages messages: [ARTBaseMessage]) {
+    func chatModel(_ chatModel: ChatModel, historyDidLoadWithMessages messages: [ARTBaseMessage]) {
         self.hideNotice("loading")
         self.prependHistoricalMessages(messages)
         self.scrollToBottom(self.messagesTableView)
     }
     
-    func chatModel(chatModel: ChatModel, membersDidUpdate members: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
-        guard presenceMessage.action != .Update else { return }
+    func chatModel(_ chatModel: ChatModel, membersDidUpdate members: [ARTPresenceMessage], presenceMessage: ARTPresenceMessage) {
+        guard presenceMessage.action != .update else { return }
 
         self.members = members
         
