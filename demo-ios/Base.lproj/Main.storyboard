@@ -141,7 +141,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="568"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageMe" id="nmh-p9-VsU" customClass="ChatMessageMeCell" customModule="demo_ios" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageMe" id="nmh-p9-VsU" customClass="ChatMessageMeCell" customModule="demo_ios" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nmh-p9-VsU" id="b2K-LC-KC1">
@@ -182,7 +182,7 @@
                                             <outlet property="messageText" destination="Eko-zQ-K9Y" id="QpQ-YE-7aw"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="center" misplaced="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageNotMe" id="3Hc-9F-e3w" customClass="ChatMessageNotMeCell" customModule="demo_ios" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="center" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageNotMe" id="3Hc-9F-e3w" customClass="ChatMessageNotMeCell" customModule="demo_ios" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Hc-9F-e3w" id="f9V-Cg-tiy">
@@ -237,7 +237,7 @@
                                             <outlet property="messageText" destination="Ql9-8j-2UY" id="as4-t7-VlI"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="center" misplaced="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PresenceMessage" id="2ps-54-qUe" customClass="PresenceMessageCell" customModule="demo_ios" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="center" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PresenceMessage" id="2ps-54-qUe" customClass="PresenceMessageCell" customModule="demo_ios" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2ps-54-qUe" id="hNR-pq-CIo">
@@ -365,6 +365,7 @@
                                     <constraint firstItem="Fc8-QE-cLr" firstAttribute="centerY" secondItem="hvg-WY-QdE" secondAttribute="centerY" id="KxB-XR-rcR"/>
                                     <constraint firstItem="0Nk-Vm-mHK" firstAttribute="centerY" secondItem="hvg-WY-QdE" secondAttribute="centerY" id="Zla-2J-nQC"/>
                                     <constraint firstAttribute="height" constant="23" id="cX6-KV-Cey"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0Nk-Vm-mHK" secondAttribute="trailing" constant="20" symbolic="YES" id="mfw-xr-o3s"/>
                                     <constraint firstItem="Fc8-QE-cLr" firstAttribute="leading" secondItem="hvg-WY-QdE" secondAttribute="leading" constant="20" id="s1m-CA-f6S"/>
                                 </constraints>
                             </view>
