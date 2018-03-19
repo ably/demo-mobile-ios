@@ -1,34 +1,89 @@
 PODS:
-  - AblyRealtime (0.8.4):
+  - Ably (1.0.11):
+    - KSCrashAblyFork (= 1.15.8-ably-1)
     - msgpack (= 0.1.8)
     - SocketRocket (= 0.5.1)
-  - GradientView (2.1.1)
-  - IHKeyboardAvoiding (2.6)
+  - GradientView (2.3.3)
+  - IHKeyboardAvoiding (4.2)
+  - KSCrashAblyFork (1.15.8-ably-1):
+    - KSCrashAblyFork/Installations (= 1.15.8-ably-1)
+  - KSCrashAblyFork/Installations (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting
+  - KSCrashAblyFork/Recording (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording/Tools (= 1.15.8-ably-1)
+  - KSCrashAblyFork/Recording/Tools (1.15.8-ably-1)
+  - KSCrashAblyFork/Reporting (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/MessageUI (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Sinks (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Tools (= 1.15.8-ably-1)
+  - KSCrashAblyFork/Reporting/Filters (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/Alert (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/AppleFmt (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/Base (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/Basic (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/GZip (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/JSON (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/Sets (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/Stringify (= 1.15.8-ably-1)
+    - KSCrashAblyFork/Reporting/Filters/Tools (= 1.15.8-ably-1)
+  - KSCrashAblyFork/Reporting/Filters/Alert (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/Base
+  - KSCrashAblyFork/Reporting/Filters/AppleFmt (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/Base
+  - KSCrashAblyFork/Reporting/Filters/Base (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+  - KSCrashAblyFork/Reporting/Filters/Basic (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/Base
+  - KSCrashAblyFork/Reporting/Filters/GZip (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/Base
+  - KSCrashAblyFork/Reporting/Filters/JSON (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/Base
+  - KSCrashAblyFork/Reporting/Filters/Sets (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/AppleFmt
+    - KSCrashAblyFork/Reporting/Filters/Base
+    - KSCrashAblyFork/Reporting/Filters/Basic
+    - KSCrashAblyFork/Reporting/Filters/GZip
+    - KSCrashAblyFork/Reporting/Filters/JSON
+    - KSCrashAblyFork/Reporting/Filters/Stringify
+  - KSCrashAblyFork/Reporting/Filters/Stringify (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters/Base
+  - KSCrashAblyFork/Reporting/Filters/Tools (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+  - KSCrashAblyFork/Reporting/MessageUI (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+  - KSCrashAblyFork/Reporting/Sinks (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
+    - KSCrashAblyFork/Reporting/Filters
+    - KSCrashAblyFork/Reporting/Tools
+  - KSCrashAblyFork/Reporting/Tools (1.15.8-ably-1):
+    - KSCrashAblyFork/Recording
   - msgpack (0.1.8)
   - SocketRocket (0.5.1)
-  - SwiftWebSocket (2.6.3)
 
 DEPENDENCIES:
-  - AblyRealtime
-  - GradientView
-  - IHKeyboardAvoiding
-  - SwiftWebSocket (from `https://github.com/tidwall/SwiftWebSocket.git`)
-
-EXTERNAL SOURCES:
-  SwiftWebSocket:
-    :git: https://github.com/tidwall/SwiftWebSocket.git
-
-CHECKOUT OPTIONS:
-  SwiftWebSocket:
-    :commit: 1c6c5dae5e960f1f16946241c4fac78b73832fb7
-    :git: https://github.com/tidwall/SwiftWebSocket.git
+  - Ably (= 1.0.11)
+  - GradientView (~> 2.3)
+  - IHKeyboardAvoiding (~> 4.2)
 
 SPEC CHECKSUMS:
-  AblyRealtime: 1f512af9778d805f6d2700e8d19952a22128e4a3
-  GradientView: 8e1295d3614a8b55f4a4b8c95529b0748d154c84
-  IHKeyboardAvoiding: d2541ee56dad83e160cd9aed0468c52247af6f49
+  Ably: ccebd5128ea2ed7e51a6fdfaaa787c546cc1b89e
+  GradientView: b044fa46c24062ee245a07a4e8bea4c5c4d63de0
+  IHKeyboardAvoiding: 9fbf816b7c3c84911964802ff110d12caf40ebef
+  KSCrashAblyFork: 6d0dd5b033710109a8fdde28103eeb0e7f9ba1f7
   msgpack: 97491d2ea799408f4694f2c7d7fd79baf77853dd
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
-  SwiftWebSocket: 76e3ade5d716a80440dbf859b39b05d842f80d03
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 43fb718e92512b510ae6c0b9417b4c20379cc165
+
+COCOAPODS: 1.4.0
